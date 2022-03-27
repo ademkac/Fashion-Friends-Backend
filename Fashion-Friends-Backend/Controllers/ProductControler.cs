@@ -25,7 +25,7 @@ namespace Fashion_Friends_Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> Get()
         {
-            return Ok(await _context.products.ToListAsync());
+            return Ok(await _context.products.Include(c=>c.Color).Include(s=>s.Size).ToListAsync());
         }
 
         // GET api/<ProuctControler>/5
@@ -34,6 +34,7 @@ namespace Fashion_Friends_Backend.Controllers
         public async Task<ActionResult<Product>> Get(int id)
         {
             var product = await _context.products.FindAsync(id);
+
             if (product == null)
                 return BadRequest("Product not found");
             return Ok(product);
