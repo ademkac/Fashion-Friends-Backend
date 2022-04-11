@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fashion_Friends_Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220327161430_CreateInitial")]
-    partial class CreateInitial
+    [Migration("20220408080808_UserInitial")]
+    partial class UserInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,28 @@ namespace Fashion_Friends_Backend.Migrations
                     b.ToTable("ColorOfProduct");
                 });
 
+            modelBuilder.Entity("Fashion_Friends_Backend.Models.ImageOfProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Picture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Productid")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Productid");
+
+                    b.ToTable("ImageOfProduct");
+                });
+
             modelBuilder.Entity("Fashion_Friends_Backend.Models.Product", b =>
                 {
                     b.Property<int>("id")
@@ -73,15 +95,15 @@ namespace Fashion_Friends_Backend.Migrations
                     b.Property<int>("Discount")
                         .HasColumnType("int");
 
+                    b.Property<string>("MainCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Material")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Picture")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -123,10 +145,50 @@ namespace Fashion_Friends_Backend.Migrations
                     b.ToTable("SizeOfProduct");
                 });
 
+            modelBuilder.Entity("Fashion_Friends_Backend.Models.UserRegister", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Newsletter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("users");
+                });
+
             modelBuilder.Entity("Fashion_Friends_Backend.Models.ColorOfProduct", b =>
                 {
                     b.HasOne("Fashion_Friends_Backend.Models.Product", null)
                         .WithMany("Color")
+                        .HasForeignKey("Productid");
+                });
+
+            modelBuilder.Entity("Fashion_Friends_Backend.Models.ImageOfProduct", b =>
+                {
+                    b.HasOne("Fashion_Friends_Backend.Models.Product", null)
+                        .WithMany("Picture")
                         .HasForeignKey("Productid");
                 });
 
@@ -140,6 +202,8 @@ namespace Fashion_Friends_Backend.Migrations
             modelBuilder.Entity("Fashion_Friends_Backend.Models.Product", b =>
                 {
                     b.Navigation("Color");
+
+                    b.Navigation("Picture");
 
                     b.Navigation("Size");
                 });

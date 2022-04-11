@@ -15,7 +15,6 @@ namespace Fashion_Friends_Backend.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     Discount = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -24,7 +23,8 @@ namespace Fashion_Friends_Backend.Migrations
                     Season = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sex = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Material = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MainCategory = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,6 +45,25 @@ namespace Fashion_Friends_Backend.Migrations
                     table.PrimaryKey("PK_ColorOfProduct", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ColorOfProduct_products_Productid",
+                        column: x => x.Productid,
+                        principalTable: "products",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImageOfProduct",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Productid = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageOfProduct", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImageOfProduct_products_Productid",
                         column: x => x.Productid,
                         principalTable: "products",
                         principalColumn: "id");
@@ -75,6 +94,11 @@ namespace Fashion_Friends_Backend.Migrations
                 column: "Productid");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ImageOfProduct_Productid",
+                table: "ImageOfProduct",
+                column: "Productid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SizeOfProduct_Productid",
                 table: "SizeOfProduct",
                 column: "Productid");
@@ -84,6 +108,9 @@ namespace Fashion_Friends_Backend.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ColorOfProduct");
+
+            migrationBuilder.DropTable(
+                name: "ImageOfProduct");
 
             migrationBuilder.DropTable(
                 name: "SizeOfProduct");

@@ -4,7 +4,7 @@
     {
         public int id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string Picture { get; set; } = string.Empty;
+        public List<ImageOfProduct>? Picture { get; set; }
         public float Price { get; set; }
         public int Discount { get; set; }
         public string Description { get; set; } = string.Empty;
@@ -16,5 +16,6 @@
         public string Sex { get; set; } = string.Empty;
         public string Material { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
+        public string MainCategory { get; set; } = string.Empty;
     }
 }
